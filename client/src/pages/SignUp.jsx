@@ -106,14 +106,14 @@ export default function SignUp() {
           />
           Password
           <br />
+          <input
+            type="password"
+            className="border p-3 rounded-md"
+            id="password"
+            onChange={handleChange}
+            onBlur={handlePasswordBlur}
+          />
           <div>
-            <input
-              type="password"
-              className="border p-3 rounded-md"
-              id="password"
-              onChange={handleChange}
-              onBlur={handlePasswordBlur}
-            />
             {!passwordValid.uppercase && passwordValid.touched && (
               <p className="text-red-500">
                 X Password must contain at least one uppercase letter.

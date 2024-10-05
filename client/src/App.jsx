@@ -4,9 +4,10 @@ import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Profile from './pages/Profile';
-import About from './pages/About';
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
+import Contact from './pages/Contact';
+import FAQ from './pages/FAQ';
 
 export default function App() {
   return (
@@ -19,7 +20,8 @@ export default function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
         </Route>
-        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/faq" element={<FAQ />} />
       </Routes>
     </BrowserRouter>
   );

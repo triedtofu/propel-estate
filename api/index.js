@@ -7,22 +7,20 @@ import path from 'path';
 
 dotenv.config();
 
+mongoose
+  .connect(process.env.MONGODB)
+  .then(() => {
+    console.log('connected to MongoDB');
+  })
+  .catch((err) => {
+    console.log('err');
+  });
+
 const __dirname = path.resolve();
+
 const app = express();
 
 app.use(express.json());
-
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB);
-    console.log('Connected to MongoDB');
-  } catch (err) {
-    console.error('Error connecting to MongoDB:', err);
-    process.exit(1);
-  }
-};
-
-connectDB();
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');

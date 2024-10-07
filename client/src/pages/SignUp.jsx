@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import OAuth from '../components/OAuth';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [emailValid, setEmailValid] = useState(true);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordValid, setPasswordValid] = useState({
     uppercase: false,
     digit: false,
@@ -20,6 +22,10 @@ export default function SignUp() {
       ...formData,
       [e.target.id]: e.target.value,
     });
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
   const validateEmail = (email) => {
@@ -107,13 +113,21 @@ export default function SignUp() {
           />
           Password
           <br />
-          <input
-            type="password"
-            className="border p-3 rounded-md"
-            id="password"
-            onChange={handleChange}
-            onBlur={handlePasswordBlur}
-          />
+          <div className="relative">
+            <input
+              type={passwordVisible ? 'text' : 'password'}
+              className="border p-3 rounded-md w-full pr-10"
+              id="password"
+              onChange={handleChange}
+              onBlur={handlePasswordBlur}
+            />
+            <div
+              className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+              onClick={togglePasswordVisibility}
+            >
+              {passwordVisible ? <FaEye /> : <FaEyeSlash />}
+            </div>
+          </div>
           <div>
             {!passwordValid.uppercase && passwordValid.touched && (
               <p className="text-red-500">

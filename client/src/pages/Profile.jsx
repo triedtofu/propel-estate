@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getDownloadURL,
   getStorage,
@@ -7,10 +7,16 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../firebase';
+import {
+  signOutUserFailure,
+  signOutUserStart,
+  signOutUserSuccess,
+} from '../redux/user/userSlice';
 
 export default function Profile() {
   const { currentUser } = useSelector((state) => state.user);
   const fileRef = useRef(null);
+  const dispatch = useDispatch();
   const [file, setFile] = useState(undefined);
   const [filePercent, setFilePercent] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
@@ -43,6 +49,21 @@ export default function Profile() {
         });
       }
     );
+  };
+
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch('/api/auth/signout');
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signOutUserFailure(data.message));
+        return;
+      }
+      dispatch(signOutUserSuccess(data));
+    } catch (error) {
+      dispatch(signOutUserFailure(data.message));
+    }
   };
 
   return (
@@ -94,13 +115,14 @@ export default function Profile() {
           id="password"
         />
         <button className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-90 disabled:opacity-85">
-          {' '}
-          Update Profile{' '}
+          Update Profile
         </button>
       </form>
       <div className="flex justify-between mt-5">
         <span className="text-red-700 cursor-pointer"> Delete Account </span>
-        <span className="text-red-700 cursor-pointer"> Sign Out </span>
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">
+          Sign Out
+        </span>
       </div>
     </div>
   );
